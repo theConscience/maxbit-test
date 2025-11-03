@@ -1,10 +1,8 @@
 <template>
-  <!-- Ссылка (если есть to и не disabled) -->
   <NuxtLink v-if="showLink" :to="to" class="btn" :class="classes" v-bind="$attrs">
     <slot>{{ label }}</slot>
   </NuxtLink>
 
-  <!-- Кнопка (обычный fallback или disabled-состояние) -->
   <button
     v-else
     class="btn"
@@ -25,36 +23,34 @@ const props = withDefaults(
     variant?: 'solid' | 'outline'
     disabled?: boolean
   }>(),
-  {
-    variant: 'outline',
-    disabled: false,
-  },
+  { variant: 'outline', disabled: false },
 )
-
-const showLink = ref(props.to && !props.disabled)
-
+const showLink = ref(!!props.to && !props.disabled)
 const classes = computed(() => (props.variant === 'outline' ? 'btn--outline' : 'btn--solid'))
-
 defineEmits<{ (e: 'click', ev: MouseEvent): void }>()
 </script>
 
-<style scoped lang="postcss">
+<style scoped>
 .btn {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-xl
-         disabled:opacity-50 disabled:pointer-events-none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1;
 }
-
-/* solid — через токены */
-.btn--solid {
-  @apply text-accent-contrast bg-accent;
-}
-
-/* outline — как в макете (белая рамка) */
 .btn--outline {
-  @apply border rounded-md;
-  border-color: #fff;
+  border: 1px solid var(--border-strong);
+  background: transparent;
 }
 .btn--outline:hover {
-  background: color-mix(in srgb, #fff 10%, transparent);
+  background: var(--overlay);
+}
+.btn--solid {
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border: 1px solid var(--accent);
 }
 </style>

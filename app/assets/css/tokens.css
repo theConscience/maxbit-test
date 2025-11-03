@@ -1,32 +1,39 @@
-:root{
-  /* Светлая тема (здесь как запасная) */
+:root {
+  /* Светлая (фон светлый, рамки тёмные) */
   --bg: #ffffff;
   --fg: #0b0f12;
-  --surface: #f5f5f5;
-  --surface-2: #e9e9e9;
-  --muted: #dcdcdc;
-  --border: #bdbdbd;
 
-  /* Семантика */
-  --accent: #0f172a;             /* не используется в тёмном варианте по макету */
+  --surface: #f5f5f5;     /* фон блоков */
+  --surface-2: #e9e9e9;   /* сайдбар */
+  --muted: #dcdcdc;       /* делители/тонкие линии */
+  --overlay: color-mix(in srgb, #0b0f12 8%, transparent);
+
+  --border: #bdbdbd;        /* обычные поля */
+  --border-strong: #000000; /* «белые» рамки из макета → чёрные в светлой */
+
+  --accent: #0b0f12;        /* активные штрихи */
   --accent-contrast: #ffffff;
+
   --error: #a26462;
   --error-border: #8a5452;
 }
 
-.dark{
-  /* Тёмная тема из скрина */
-  --bg: #000000;                 /* общий фон */
-  --fg: #fbfbfb;                 /* основной текст/линии */
-  --surface: #151212;            /* тёмная панель/кнопка bg */
-  --surface-2: #2b2929;          /* боковое меню/втор. панели */
-  --muted: #404040;              /* ховеры/заливки */
-  --border: #757575;             /* серые границы полей */
-  --border-strong: #fbfbfb;      /* белые рамки как на макете */
+.dark {
+  /* Тёмная (фон чёрный, рамки белые) — как на макете */
+  --bg: #000000;
+  --fg: #fbfbfb;
 
-  --accent: #fbfbfb;             /* кнопки-текст/иконки (outline-стиль) */
+  --surface: #151212;
+  --surface-2: #2b2929;
+  --muted: #404040;
+  --overlay: color-mix(in srgb, #fbfbfb 8%, transparent);
+
+  --border: #757575;
+  --border-strong: #fbfbfb;
+
+  --accent: #fbfbfb;
   --accent-contrast: #000000;
 
-  --error: #8e5d5b;              /* текст ошибки */
-  --error-border: #794b49;       /* бордер ошибки */
+  --error: #8e5d5b;
+  --error-border: #794b49;
 }

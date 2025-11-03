@@ -1,3 +1,4 @@
+// ---- Types ----
 type ID = string
 
 export type Movie = {
@@ -28,11 +29,9 @@ export type Booking = {
   status: 'unpaid' | 'paid'
 }
 
+// ---- State ----
 let seq = 1
-const nid = () => String(seq++)
-
-const now = () => new Date()
-const inMin = (m: number) => new Date(Date.now() + m * 60_000)
+const nid = (): ID => String(seq++)
 
 export const db = {
   users: new Map<string, { username: string; password: string; token: string }>(),
@@ -43,38 +42,83 @@ export const db = {
   settings: { paymentTimeoutSeconds: 15 * 60 },
 }
 
-// seed
-if (db.movies.length === 0) {
+// ---- Utils ----
+const inMin = (m: number) => new Date(Date.now() + m * 60_000)
+const seat = (r: number, c: number) => `${r}-${c}`
+
+// ассерт, который устраивает TS и даёт рантайм-гарантию
+function req<T>(arr: T[], i: number, name: string): T {
+  const v = arr[i]
+  if (!v) throw new Error(`[seed] ${name}[${i}] is missing`)
+  return v
+}
+
+// ---- Seed helpers ----
+export function resetDb() {
+  db.users.clear()
+  db.movies.length = 0
+  db.cinemas.length = 0
+  db.sessions.length = 0
+  db.bookings.length = 0
+  db.settings = { paymentTimeoutSeconds: 15 * 60 }
+  seq = 1
+}
+
+export function pushDemoUser() {
+  // простая демо-учётка (совместима с твоим requireAuth)
+  db.users.set('demo', { username: 'demo', password: 'Password1', token: 'demo-token' })
+}
+
+export function seedIfEmpty() {
+  if (db.movies.length > 0 || db.cinemas.length > 0 || db.sessions.length > 0) return
+
+  // 1) базовые сущности
   db.movies.push(
     { id: nid(), title: 'Мстители', durationMin: 140, rating: 4.2, posterUrl: '' },
     { id: nid(), title: 'Тёмный рыцарь', durationMin: 165, rating: 4.8, posterUrl: '' },
   )
-  db.cinemas.push({ id: nid(), title: 'Киномакс Центральный' }, { id: nid(), title: 'IMAX Aurora' })
-  // по сеансу на фильм/кинотеатр
+
+  db.cinemas.push(
+    { id: nid(), title: 'Киномакс Центральный' },
+    { id: nid(), title: 'IMAX Aurora' },
+  )
+
+  // зафиксированные ссылки (TS теперь уверен, что элементы есть)
+  const m0 = req(db.movies, 0, 'movies')
+  const m1 = req(db.movies, 1, 'movies')
+  const c0 = req(db.cinemas, 0, 'cinemas')
+  const c1 = req(db.cinemas, 1, 'cinemas')
+
+  // 2) сессии
   const s1: Session = {
     id: nid(),
-    movieId: db.movies[0].id,
-    cinemaId: db.cinemas[0].id,
-    cinemaName: db.cinemas[0].title,
+    movieId: m0.id,
+    cinemaId: c0.id,
+    cinemaName: c0.title,
     startsAt: inMin(120).toISOString(),
     rows: 8,
     cols: 12,
-    bookedSeats: ['1-2', '1-3'],
+    bookedSeats: [seat(1, 2), seat(1, 3)],
   }
   const s2: Session = {
     id: nid(),
-    movieId: db.movies[1].id,
-    cinemaId: db.cinemas[1].id,
-    cinemaName: db.cinemas[1].title,
+    movieId: m1.id,
+    cinemaId: c1.id,
+    cinemaName: c1.title,
     startsAt: inMin(240).toISOString(),
     rows: 8,
     cols: 12,
     bookedSeats: [],
   }
+
   db.sessions.push(s1, s2)
+  pushDemoUser()
 }
 
-// helper
+// сразу сидим при загрузке модуля (dev)
+seedIfEmpty()
+
+// ---- Auth helper ----
 export function requireAuth(event: any) {
   const auth = getHeader(event, 'authorization') || ''
   const token = auth.replace(/^Bearer\s+/i, '')

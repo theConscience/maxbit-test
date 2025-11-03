@@ -8,12 +8,7 @@ export default defineNuxtConfig({
   srcDir: 'app/',
   ssr: true,
   typescript: { strict: true, typeCheck: true },
-  modules: [
-    '@nuxt/fonts',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@pinia/nuxt',
-  ],
+  modules: ['@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt'],
   runtimeConfig: {
     public: { API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8080' },
   },
@@ -30,10 +25,20 @@ export default defineNuxtConfig({
   },
 
   css: ['@/assets/css/tailwind.css'],
+  // fonts: {
+  //   families: [
+  //     {
+  //       name: 'Inter',
+  //       provider: 'google',
+  //       weights: [400, 500, 600, 700],
+  //       display: 'swap',
+  //     },
+  //   ],
+  // },
   fonts: {
     families: [
       {
-        name: 'Inter',
+        name: 'Open Sans',
         provider: 'google',
         weights: [400, 500, 600, 700],
         display: 'swap',

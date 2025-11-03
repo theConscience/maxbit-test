@@ -1,5 +1,10 @@
+import { db } from './_db'
+
 export default defineEventHandler(async (e) => {
-  const { username, password } = await readBody<{username:string;password:string}>(e)
-  if (username === 'user' && password === 'pass123A') return { token: 'mock-token-user' }
-  throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  const body = await readBody<{ username: string; password: string }>(e)
+  const u = body?.username ? db.users.get(body.username) : null
+  if (!u || u.password !== body.password) {
+    throw createError({ statusCode: 401, statusMessage: 'Неверный логин или пароль' })
+  }
+  return { token: u.token }
 })

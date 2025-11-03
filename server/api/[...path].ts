@@ -1,5 +1,11 @@
 export default defineEventHandler(async (event) => {
   const cfg = useRuntimeConfig()
+
+  // если внешний API не задан — отдаём 503 (моки перекрывают своими маршрутами)
+  if (!cfg.public.API_BASE_URL) {
+    throw createError({ statusCode: 503, statusMessage: 'External API is not configured' })
+  }
+
   const method = getMethod(event) // предупреждение про deprecated можно игнорить
   const path = event.context.params!.path
   const query = getQuery(event)

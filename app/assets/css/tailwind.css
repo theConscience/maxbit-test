@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Утилиты на токенах */
 @layer utilities {
   .bg-bg {
     background-color: var(--bg);
@@ -10,13 +11,7 @@
   .bg-surface {
     background-color: var(--surface);
   }
-  .hover\:bg-surface:hover {
-    background-color: var(--surface);
-  }
   .bg-surface-2 {
-    background-color: var(--surface-2);
-  }
-  .hover\:bg-surface-2:hover {
     background-color: var(--surface-2);
   }
   .bg-accent {
@@ -29,40 +24,29 @@
   .text-accent {
     color: var(--accent);
   }
-  .hover\:text-accent:hover {
-    color: var(--accent);
-  }
   .text-accent-contrast {
     color: var(--accent-contrast);
   }
-  .hover\:text-accent-contrast:hover {
-    color: var(--accent-contrast);
-  }
-
   .text-error {
     color: var(--error);
   }
 
+  .divide-muted > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--muted);
+  }
   .border-border {
     border-color: var(--border);
   }
-  .border-borderStrong {
-    border-color: var(--border-strong);
-  }
-  .hover\:border-borderStrong:hover {
+  .border-strong {
     border-color: var(--border-strong);
   }
 
   .ring-accent {
     --tw-ring-color: var(--accent);
   }
-
-  .divide-muted > :not([hidden]) ~ :not([hidden]) {
-    border-color: var(--muted);
-  }
 }
 
-/* Базовое */
+/* Базовые стили */
 :root {
   color-scheme: light dark;
 }
@@ -73,46 +57,60 @@ body {
 
 /* Рамка–контейнер */
 .frame {
-  @apply border-2 border-white rounded-xl mx-auto w-full max-w-[944px];
-  @apply lg:mt-20 lg:min-h-[624px]; /* 80 / 624 нормализовано */
+  @apply mx-auto w-full max-w-[944px];
+  @apply border-2 border-white;
+  border-color: var(--border-strong);
+  @apply lg:mt-20 lg:min-h-[624px];
 }
 
 /* Внутренняя раскладка */
 .layout {
-  @apply lg:grid lg:grid-cols-[176px_1fr] lg:gap-x-16; /* 176 + 64 */
-  @apply pt-8 lg:pr-20; /* top 32, right 80 */
+  @apply pt-8 lg:grid lg:grid-cols-[176px_1fr] lg:gap-x-16 lg:pr-20;
 }
 
-/* Заголовок над рамкой */
+/* Заголовок */
 .header {
-  @apply pt-6 px-4 lg:pt-[34px] lg:pl-[40px]; /* визуально 34/40 на 1024 */
+  @apply pt-6 px-4 lg:pt-[34px] lg:pl-[40px];
 }
 .header__title {
-  @apply font-normal underline decoration-white;
-  @apply text-[28px] leading-[1.1]; /* 24–28 допустимо, взяли 28 для читабельности */
+  @apply text-[28px] leading-[1.1] font-normal underline;
+  text-decoration-color: var(--fg);
 }
 
-/* Сайдбар (левое меню) */
+/* Сайдбар */
 .sidebar {
-  @apply hidden lg:block w-[176px] rounded border border-white/80;
+  @apply hidden lg:block w-[176px] rounded;
+  border: 1px solid var(--border);
 }
 .sidebar__nav {
-  @apply divide-y divide-muted;
+  border-top: 1px solid var(--muted);
+}
+.sidebar__nav > * + * {
+  border-top: 1px solid var(--muted);
 }
 .sidebar__link {
-  @apply block px-4 py-3 underline decoration-white;
+  @apply block px-4 py-3;
+  text-decoration-color: var(--fg);
 }
 .sidebar__link--active {
-  @apply -ml-px h-12 w-[176px] py-3 pl-4 pr-12
-         border border-[#A7A7A7] bg-[#2D2D2D] no-underline;
+  @apply -ml-px h-12 w-[176px] py-3 pl-4 pr-12;
+  border: 1px solid var(--border-strong);
+  background: var(--overlay);
+  text-decoration: none;
 }
 
-/* Таблица фильмов */
+/* Таблица */
 .table {
   @apply w-full text-left;
 }
 .table__rule {
-  @apply h-px bg-white/80 ml-[40px] mr-20 mb-4 hidden lg:block;
+  height: 1px;
+  background: var(--border-strong);
+  margin-left: 40px;
+  margin-right: 80px;
+}
+.table__row {
+  border-top: 1px solid var(--border);
 }
 .table__th {
   @apply text-[14px] leading-[1.2] font-normal py-3;
@@ -120,16 +118,15 @@ body {
 .table__td {
   @apply text-[16px] leading-[1.2] font-normal py-4;
 }
-.table__row {
-  @apply border-t border-white/30;
-}
 
-/* Медиа–ячейка с превью */
+/* Медиа-ячейка */
 .media {
   @apply flex items-center gap-4;
 }
 .media__thumb {
-  @apply w-10 h-10 rounded bg-[#2D2D2D] border border-[#A7A7A7] flex items-center justify-center;
+  @apply w-10 h-10 rounded flex items-center justify-center;
+  background: var(--surface);
+  border: 1px solid var(--border);
 }
 
 /* Кнопки */
@@ -137,10 +134,53 @@ body {
   @apply inline-flex items-center justify-center h-9 px-[10px] rounded-md text-[12px] leading-none;
 }
 .btn--outline {
-  @apply border border-white hover:bg-white/10;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+}
+.btn--outline:hover {
+  background: var(--overlay);
+}
+.btn--solid {
+  color: var(--accent-contrast);
+  background: var(--accent);
 }
 
-/* Подписи, ссылки */
+/* Ссылки */
 .link {
-  @apply underline decoration-white;
+  text-decoration: underline;
+  text-decoration-color: var(--fg);
+}
+
+/* Дефолтные состояния для инпутов */
+.input {
+  @apply w-full h-10 rounded-md px-4 bg-transparent text-white border border-white/70 placeholder:opacity-50 outline-none;
+}
+.input:focus {
+  @apply ring-2 ring-[color:var(--accent)] border-white;
+}
+
+/* Ошибки */
+.field--error .input {
+  @apply border-red-500 ring-0;
+}
+
+.field__icon {
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-red-500 text-sm select-none;
+}
+
+/* Токены */
+html {
+  font-family:
+    'Open Sans',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    'Noto Sans',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol';
 }

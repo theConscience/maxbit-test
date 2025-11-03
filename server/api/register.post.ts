@@ -1,5 +1,14 @@
+import { db } from './_db'
+
 export default defineEventHandler(async (e) => {
-  const { username, password } = await readBody<{ username: string; password: string }>(e)
-  if (!username || !password) throw createError({ statusCode: 400, statusMessage: 'Bad payload' })
-  return { ok: true, token: 'mock-token-' + username }
+  const body = await readBody<{ username: string; password: string }>(e)
+  if (!body?.username || !body?.password) {
+    throw createError({ statusCode: 400, statusMessage: 'Bad payload' })
+  }
+  if (db.users.has(body.username)) {
+    throw createError({ statusCode: 409, statusMessage: 'User exists' })
+  }
+  const token = 'mock-' + body.username + '-' + Math.random().toString(36).slice(2, 8)
+  db.users.set(body.username, { username: body.username, password: body.password, token })
+  return { token }
 })
