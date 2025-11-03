@@ -1,0 +1,146 @@
+@import './tokens.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-bg {
+    background-color: var(--bg);
+  }
+  .bg-surface {
+    background-color: var(--surface);
+  }
+  .hover\:bg-surface:hover {
+    background-color: var(--surface);
+  }
+  .bg-surface-2 {
+    background-color: var(--surface-2);
+  }
+  .hover\:bg-surface-2:hover {
+    background-color: var(--surface-2);
+  }
+  .bg-accent {
+    background-color: var(--accent);
+  }
+
+  .text-fg {
+    color: var(--fg);
+  }
+  .text-accent {
+    color: var(--accent);
+  }
+  .hover\:text-accent:hover {
+    color: var(--accent);
+  }
+  .text-accent-contrast {
+    color: var(--accent-contrast);
+  }
+  .hover\:text-accent-contrast:hover {
+    color: var(--accent-contrast);
+  }
+
+  .text-error {
+    color: var(--error);
+  }
+
+  .border-border {
+    border-color: var(--border);
+  }
+  .border-borderStrong {
+    border-color: var(--border-strong);
+  }
+  .hover\:border-borderStrong:hover {
+    border-color: var(--border-strong);
+  }
+
+  .ring-accent {
+    --tw-ring-color: var(--accent);
+  }
+
+  .divide-muted > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--muted);
+  }
+}
+
+/* Базовое */
+:root {
+  color-scheme: light dark;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Рамка–контейнер */
+.frame {
+  @apply border-2 border-white rounded-xl mx-auto w-full max-w-[944px];
+  @apply lg:mt-20 lg:min-h-[624px]; /* 80 / 624 нормализовано */
+}
+
+/* Внутренняя раскладка */
+.layout {
+  @apply lg:grid lg:grid-cols-[176px_1fr] lg:gap-x-16; /* 176 + 64 */
+  @apply pt-8 lg:pr-20; /* top 32, right 80 */
+}
+
+/* Заголовок над рамкой */
+.header {
+  @apply pt-6 px-4 lg:pt-[34px] lg:pl-[40px]; /* визуально 34/40 на 1024 */
+}
+.header__title {
+  @apply font-normal underline decoration-white;
+  @apply text-[28px] leading-[1.1]; /* 24–28 допустимо, взяли 28 для читабельности */
+}
+
+/* Сайдбар (левое меню) */
+.sidebar {
+  @apply hidden lg:block w-[176px] rounded border border-white/80;
+}
+.sidebar__nav {
+  @apply divide-y divide-muted;
+}
+.sidebar__link {
+  @apply block px-4 py-3 underline decoration-white;
+}
+.sidebar__link--active {
+  @apply -ml-px h-12 w-[176px] py-3 pl-4 pr-12
+         border border-[#A7A7A7] bg-[#2D2D2D] no-underline;
+}
+
+/* Таблица фильмов */
+.table {
+  @apply w-full text-left;
+}
+.table__rule {
+  @apply h-px bg-white/80 ml-[40px] mr-20 mb-4 hidden lg:block;
+}
+.table__th {
+  @apply text-[14px] leading-[1.2] font-normal py-3;
+}
+.table__td {
+  @apply text-[16px] leading-[1.2] font-normal py-4;
+}
+.table__row {
+  @apply border-t border-white/30;
+}
+
+/* Медиа–ячейка с превью */
+.media {
+  @apply flex items-center gap-4;
+}
+.media__thumb {
+  @apply w-10 h-10 rounded bg-[#2D2D2D] border border-[#A7A7A7] flex items-center justify-center;
+}
+
+/* Кнопки */
+.btn {
+  @apply inline-flex items-center justify-center h-9 px-[10px] rounded-md text-[12px] leading-none;
+}
+.btn--outline {
+  @apply border border-white hover:bg-white/10;
+}
+
+/* Подписи, ссылки */
+.link {
+  @apply underline decoration-white;
+}

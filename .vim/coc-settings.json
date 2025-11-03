@@ -1,0 +1,25 @@
+{
+  "languageserver": {
+    "vue": {
+      "command": "node",
+      "args": ["./node_modules/@volar/vue-language-server/bin/vue-language-server.js", "--stdio"],
+      "filetypes": ["vue", "typescript", "javascript"],
+      "rootPatterns": ["package.json", "tsconfig.json", ".git"],
+      "initializationOptions": {
+        "typescript": {
+          "tsdk": "./node_modules/typescript/lib"
+        },
+        "languageFeatures": {
+          "diagnostics": true,
+          "completion": true,
+          "hover": true
+        }
+      }
+    }
+  },
+  "tsserver.enable": true,
+  "tsserver.tsdk": "./node_modules/typescript/lib",
+  "eslint.enable": true,
+  "prettier.enable": true,
+  "diagnostic.displayByAle": true
+}
