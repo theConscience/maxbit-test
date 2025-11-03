@@ -1,24 +1,40 @@
 <template>
-  <component
-    :is="to ? 'NuxtLink' : 'button'"
-    :to="to"
+  <!-- Ссылка (если есть to и не disabled) -->
+  <NuxtLink v-if="showLink" :to="to" class="btn" :class="classes" v-bind="$attrs">
+    <slot>{{ label }}</slot>
+  </NuxtLink>
+
+  <!-- Кнопка (обычный fallback или disabled-состояние) -->
+  <button
+    v-else
     class="btn"
-    :class="variant === 'outline' ? 'btn--outline' : 'btn--solid'"
     :disabled="disabled"
+    :class="classes"
     v-bind="$attrs"
     @click="$emit('click', $event)"
   >
     <slot>{{ label }}</slot>
-  </component>
+  </button>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  label?: string
-  to?: string
-  variant?: 'solid' | 'outline'
-  disabled?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    to?: string
+    label?: string
+    variant?: 'solid' | 'outline'
+    disabled?: boolean
+  }>(),
+  {
+    variant: 'outline',
+    disabled: false,
+  },
+)
+
+const showLink = ref(props.to && !props.disabled)
+
+const classes = computed(() => (props.variant === 'outline' ? 'btn--outline' : 'btn--solid'))
+
 defineEmits<{ (e: 'click', ev: MouseEvent): void }>()
 </script>
 
@@ -28,16 +44,12 @@ defineEmits<{ (e: 'click', ev: MouseEvent): void }>()
          disabled:opacity-50 disabled:pointer-events-none;
 }
 
-/* Сплошная кнопка на акцентном цвете из токенов */
+/* solid — через токены */
 .btn--solid {
   @apply text-accent-contrast bg-accent;
-  background: var(--accent);
-}
-.btn--solid:hover {
-  filter: brightness(0.96);
 }
 
-/* Обводочная, как в макете */
+/* outline — как в макете (белая рамка) */
 .btn--outline {
   @apply border rounded-md;
   border-color: #fff;

@@ -17,7 +17,9 @@
 
 <script setup lang="ts">
 const catalog = useCatalogStore()
-const { movies, fetchMovies, pending, error } = storeToRefs(catalog)
+const { movies, pending, error } = storeToRefs(catalog)
 
-onMounted(() => { catalog.fetchMovies() })
+onMounted(() => {
+  catalog.fetchMovies()
+})
 </script>

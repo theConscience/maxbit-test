@@ -6,10 +6,15 @@
     <UiAlert v-else-if="error" type="error" text="Не удалось загрузить кинотеатры" />
 
     <div v-else class="grid grid-cols-4 gap-4">
-      <article v-for="m in movies" :key="m.id" class="card card--interactive">
-        <img :src="m.posterUrl" :alt="m.title" class="w-full h-64 object-cover rounded-lg mb-3" />
-        <h3 class="card__title mb-2">{{ m.title }}</h3>
-        <UiButton :to="`/cinemas/${m.id}`" label="Просмотреть сеансы" />
+      <article v-for="c in cinemas" :key="c.id" class="card card--interactive">
+        <img
+          v-if="c.posterUrl || c.imageUrl"
+          :src="(c.posterUrl || c.imageUrl)!"
+          :alt="c.title"
+          class="w-full h-64 object-cover rounded-lg mb-3"
+        />
+        <h3 class="card__title mb-2">{{ c.title }}</h3>
+        <UiButton :to="`/cinemas/${c.id}`" label="Просмотреть сеансы" />
       </article>
     </div>
   </section>
@@ -17,7 +22,8 @@
 
 <script setup lang="ts">
 const catalog = useCatalogStore()
-const { cinemas, fetchCinemas, pending, error } = storeToRefs(catalog)
-
-onMounted(() => { catalog.fetchCinemas() })
+const { cinemas, pending, error } = storeToRefs(catalog)
+onMounted(() => {
+  catalog.fetchCinemas()
+})
 </script>

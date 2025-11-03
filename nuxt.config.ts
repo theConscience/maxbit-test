@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/image',
-    ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs'] }]
+    '@pinia/nuxt',
   ],
   runtimeConfig: {
     public: { API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8080' },

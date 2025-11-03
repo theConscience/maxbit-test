@@ -1,35 +1,95 @@
+import { defineStore } from 'pinia'
+import type { Movie, Cinema, Session } from '@/types/api'
+
 export const useCatalogStore = defineStore('catalog', {
-  state: () => ({ movies: [] as any[], cinemas: [] as any[], movie: null as any, movieSessions: [] as any[], session: null as any, pending: false, error: null as any }),
+  state: () => ({
+    movies: [] as Movie[],
+    movie: null as Movie | null,
+    movieSessions: [] as Session[],
+
+    cinemas: [] as Cinema[],
+    cinema: null as Cinema | null,
+    cinemaSessions: [] as Session[],
+
+    session: null as Session | null, // <— нужно для /sessions/[id]
+    pending: false,
+    error: null as any,
+  }),
   actions: {
     async fetchMovies() {
-      this.pending = true; this.error = null
-      try { this.movies = await useApi()('/movies') }
-      catch (e) { this.error = e } finally { this.pending = false }
-    },
-    async fetchMovieWithSessions(id: string) {
-      this.pending = true; this.error = null
+      this.pending = true
+      this.error = null
       try {
-        const [sessions] = await Promise.all([
-          useApi()(`/movies/${id}/sessions`),
+        const api = useApi()
+        this.movies = await api<Movie[]>('/movies')
+      } catch (e) {
+        this.error = e
+      } finally {
+        this.pending = false
+      }
+    },
+
+    async fetchMovieWithSessions(id: string) {
+      this.pending = true
+      this.error = null
+      try {
+        const api = useApi()
+        const [movie, sessions] = await Promise.all([
+          api<Movie>(`/movies/${id}`),
+          api<Session[]>(`/movies/${id}/sessions`),
         ])
-        this.movie = (this.movies.find((m:any) => String(m.id) === String(id)) || null)
-        this.movieSessions = sessions as any[]
-      } catch (e) { this.error = e } finally { this.pending = false }
+        this.movie = movie
+        this.movieSessions = sessions
+      } catch (e) {
+        this.error = e
+      } finally {
+        this.pending = false
+      }
     },
+
     async fetchCinemas() {
-      this.pending = true; this.error = null
-      try { this.cinemas = await useApi()('/cinemas') }
-      catch (e) { this.error = e } finally { this.pending = false }
+      this.pending = true
+      this.error = null
+      try {
+        const api = useApi()
+        this.cinemas = await api<Cinema[]>('/cinemas')
+      } catch (e) {
+        this.error = e
+      } finally {
+        this.pending = false
+      }
     },
-    async fetchCinemaSessions(id:string) {
-      this.pending = true; this.error = null
-      try { this.movieSessions = await useApi()(`/cinemas/${id}/session`) }
-      catch (e) { this.error = e } finally { this.pending = false }
+
+    async fetchCinemaWithSessions(id: string) {
+      this.pending = true
+      this.error = null
+      try {
+        const api = useApi()
+        const [cinema, sessions] = await Promise.all([
+          api<Cinema>(`/cinemas/${id}`),
+          api<Session[]>(`/cinemas/${id}/sessions`),
+        ])
+        this.cinema = cinema
+        this.cinemaSessions = sessions
+      } catch (e) {
+        this.error = e
+      } finally {
+        this.pending = false
+      }
     },
-    async fetchSession(id:string) {
-      this.pending = true; this.error = null
-      try { this.session = await useApi()(`/movieSessions/${id}`) }
-      catch (e) { this.error = e } finally { this.pending = false }
+
+    async fetchSession(id: string) {
+      // <— добавили
+      this.pending = true
+      this.error = null
+      try {
+        const api = useApi()
+        this.session = await api<Session>(`/movieSessions/${id}`)
+      } catch (e) {
+        this.error = e
+      } finally {
+        this.pending = false
+      }
     },
   },
 })

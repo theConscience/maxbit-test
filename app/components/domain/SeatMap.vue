@@ -1,89 +1,70 @@
-// <template>
-//   <component
-//     :is="to ? 'NuxtLink' : 'button'"
-//     :to="to"
-//     class="btn"
-//     :class="variant === 'outline' ? 'btn--outline' : 'btn--solid'"
-//     :disabled="disabled"
-//     v-bind="$attrs"
-//     @click="$emit('click', $event)"
-//   >
-//     <slot>{{ label }}</slot>
-//   </component>
-// </template>
-
-// <script setup lang="ts">
-// defineProps<{
-//   label?: string
-//   to?: string
-//   variant?: 'solid' | 'outline'
-//   disabled?: boolean
-// }>()
-// defineEmits<{ (e: 'click', ev: MouseEvent): void }>()
-// </script>
-
-// <style scoped lang="postcss">
-// .btn {
-//   @apply inline-flex items-center justify-center px-4 py-2 rounded-xl
-//          disabled:opacity-50 disabled:pointer-events-none;
-// }
-
-// /* Сплошная кнопка на акцентном цвете из токенов */
-// .btn--solid {
-//   @apply text-accent-contrast bg-accent;
-//   background: var(--accent);
-// }
-// .btn--solid:hover { filter: brightness(0.96); }
-
-// /* Обводочная, как в макете */
-// .btn--outline {
-//   @apply border rounded-md;
-//   border-color: #fff;
-// }
-// .btn--outline:hover { background: color-mix(in srgb, #fff 10%, transparent); }
-// </style>
-
 <template>
-  <component
-    :is="to ? 'NuxtLink' : 'button'"
-    :to="to"
-    class="btn"
-    :class="variant === 'outline' ? 'btn--outline' : 'btn--solid'"
-    :disabled="disabled"
-    v-bind="$attrs"
-    @click="$emit('click', $event)"
-  >
-    <slot>{{ label }}</slot>
-  </component>
+  <section aria-labelledby="seatmap-title">
+    <h2 id="seatmap-title" class="sr-only">Схема зала</h2>
+
+    <div
+      class="inline-grid gap-2 p-4 rounded-md border border-borderStrong bg-surface-2"
+      :style="{ gridTemplateColumns: `repeat(${cols}, minmax(28px, 1fr))` }"
+    >
+      <button
+        v-for="seat in seats"
+        :key="seat.id"
+        type="button"
+        :aria-label="'seat'"
+        :disabled="seat.booked"
+        @click="toggle(seat.id)"
+        class="h-7 w-7 rounded flex items-center justify-center text-[12px] leading-none border"
+        :class="seatClass(seat)"
+      >
+        {{ seat.label }}
+      </button>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  label?: string
-  to?: string
-  variant?: 'solid' | 'outline'
-  disabled?: boolean
-}>()
-defineEmits<{ (e: 'click', ev: MouseEvent): void }>()
+type SeatId = string
+
+const props = withDefaults(
+  defineProps<{
+    rows: number
+    cols: number
+    /** занятые сервером места, выбор по ним запрещён */
+    booked?: SeatId[]
+    /** выбранные пользователем (v-model) */
+    modelValue?: SeatId[]
+  }>(),
+  {
+    booked: () => [],
+    modelValue: () => [],
+  },
+)
+
+const emit = defineEmits<{ (e: 'update:modelValue', v: SeatId[]): void }>()
+
+const seats = computed(() => {
+  const out: { id: SeatId; label: string; booked: boolean }[] = []
+  for (let r = 1; r <= props.rows; r++) {
+    for (let c = 1; c <= props.cols; c++) {
+      const id = `${r}-${c}`
+      out.push({ id, label: c.toString(), booked: props.booked!.includes(id) })
+    }
+  }
+  return out
+})
+
+function toggle(id: SeatId) {
+  if (props.booked!.includes(id)) return
+  const set = new Set(props.modelValue)
+  set.has(id) ? set.delete(id) : set.add(id)
+  emit('update:modelValue', Array.from(set))
+}
+
+function seatClass(seat: { id: SeatId; booked: boolean }) {
+  if (seat.booked) return 'bg-muted text-fg/40 border-border cursor-not-allowed'
+  const active = props.modelValue!.includes(seat.id)
+  return active
+    ? 'bg-accent text-accent-contrast border-borderStrong'
+    : 'bg-surface text-fg hover:bg-surface-2 border-border'
+}
 </script>
-
-<style scoped lang="postcss">
-.btn {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-xl
-         disabled:opacity-50 disabled:pointer-events-none;
-}
-
-/* Сплошная кнопка на акцентном цвете из токенов */
-.btn--solid {
-  @apply text-accent-contrast bg-accent;
-  background: var(--accent);
-}
-.btn--solid:hover { filter: brightness(0.96); }
-
-/* Обводочная, как в макете */
-.btn--outline {
-  @apply border rounded-md;
-  border-color: #fff;
-}
-.btn--outline:hover { background: color-mix(in srgb, #fff 10%, transparent); }
-</style>
