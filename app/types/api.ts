@@ -10,6 +10,7 @@ export type Movie = {
 export type Cinema = {
   id: string
   title: string
+  address: string
   posterUrl?: string
   imageUrl?: string
 }

@@ -3,184 +3,230 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Утилиты на токенах */
+/* ── УТИЛИТЫ НА ТОКЕНАХ ─────────────────────────────────────────────── */
 @layer utilities {
-  .bg-bg {
-    background-color: var(--bg);
-  }
-  .bg-surface {
-    background-color: var(--surface);
-  }
-  .bg-surface-2 {
-    background-color: var(--surface-2);
-  }
-  .bg-accent {
-    background-color: var(--accent);
-  }
+  /* background */
+  .bg-bg { background-color: var(--bg); }
+  .bg-surface { background-color: var(--surface); }
+  .bg-surface-2 { background-color: var(--surface-2); }
+  .bg-accent { background-color: var(--accent); }
+  .hover\:bg-surface:hover { background-color: var(--surface); }
+  .hover\:bg-surface-2:hover { background-color: var(--surface-2); }
 
-  .text-fg {
-    color: var(--fg);
-  }
-  .text-accent {
-    color: var(--accent);
-  }
-  .text-accent-contrast {
-    color: var(--accent-contrast);
-  }
-  .text-error {
-    color: var(--error);
-  }
+  /* text */
+  .text-fg { color: var(--fg); }
+  .text-accent { color: var(--accent); }
+  .text-accent-contrast { color: var(--accent-contrast); }
+  .text-error { color: var(--error); }
+  .hover\:text-accent:hover { color: var(--accent); }
+  .hover\:text-accent-contrast:hover { color: var(--accent-contrast); }
 
-  .divide-muted > :not([hidden]) ~ :not([hidden]) {
-    border-color: var(--muted);
-  }
-  .border-border {
-    border-color: var(--border);
-  }
-  .border-strong {
-    border-color: var(--border-strong);
-  }
+  /* borders & divide */
+  .border-border { border-color: var(--border); }
+  .border-strong { border-color: var(--border-strong); }
+  .hover\:border-strong:hover { border-color: var(--border-strong); }
+  .divide-muted > :not([hidden]) ~ :not([hidden]) { border-color: var(--muted); }
 
-  .ring-accent {
-    --tw-ring-color: var(--accent);
-  }
+  /* rings */
+  .ring-accent { --tw-ring-color: var(--accent); }
+
+  /* fonts */
+  .font-sans-token { font-family: var(--font-sans); }
+  .font-mono-token { font-family: var(--font-mono); }
 }
 
-/* Базовые стили */
+/* ── БАЗА ────────────────────────────────────────────────────────────── */
 :root {
   color-scheme: light dark;
 }
+
+/* ── ШРИФТ ───────────────────────────────────────────────────────────── */
+html {
+  font-family: var(--font-sans);
+}
+
 body {
   background: var(--bg);
   color: var(--fg);
 }
 
-/* Рамка–контейнер */
-.frame {
-  @apply mx-auto w-full max-w-[944px];
-  @apply border-2 border-white;
-  border-color: var(--border-strong);
-  @apply lg:mt-20 lg:min-h-[624px];
-}
-
-/* Внутренняя раскладка */
-.layout {
-  @apply pt-8 lg:grid lg:grid-cols-[176px_1fr] lg:gap-x-16 lg:pr-20;
-}
-
-/* Заголовок */
-.header {
-  @apply pt-6 px-4 lg:pt-[34px] lg:pl-[40px];
-}
-.header__title {
-  @apply text-[28px] leading-[1.1] font-normal underline;
-  text-decoration-color: var(--fg);
-}
-
-/* Сайдбар */
-.sidebar {
-  @apply hidden lg:block w-[176px] rounded;
-  border: 1px solid var(--border);
-}
-.sidebar__nav {
-  border-top: 1px solid var(--muted);
-}
-.sidebar__nav > * + * {
-  border-top: 1px solid var(--muted);
-}
-.sidebar__link {
-  @apply block px-4 py-3;
-  text-decoration-color: var(--fg);
-}
-.sidebar__link--active {
-  @apply -ml-px h-12 w-[176px] py-3 pl-4 pr-12;
-  border: 1px solid var(--border-strong);
-  background: var(--overlay);
-  text-decoration: none;
-}
-
-/* Таблица */
-.table {
-  @apply w-full text-left;
-}
-.table__rule {
-  height: 1px;
-  background: var(--border-strong);
-  margin-left: 40px;
-  margin-right: 80px;
-}
-.table__row {
-  border-top: 1px solid var(--border);
-}
-.table__th {
-  @apply text-[14px] leading-[1.2] font-normal py-3;
-}
-.table__td {
-  @apply text-[16px] leading-[1.2] font-normal py-4;
-}
-
-/* Медиа-ячейка */
-.media {
-  @apply flex items-center gap-4;
-}
-.media__thumb {
-  @apply w-10 h-10 rounded flex items-center justify-center;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-
-/* Кнопки */
-.btn {
-  @apply inline-flex items-center justify-center h-9 px-[10px] rounded-md text-[12px] leading-none;
-}
-.btn--outline {
-  border: 1px solid var(--border-strong);
-  background: transparent;
-}
-.btn--outline:hover {
-  background: var(--overlay);
-}
-.btn--solid {
-  color: var(--accent-contrast);
-  background: var(--accent);
-}
-
-/* Ссылки */
-.link {
-  text-decoration: underline;
-  text-decoration-color: var(--fg);
-}
-
-/* Дефолтные состояния для инпутов */
+/* ── ИНПУТЫ (глобальный дефолт, не ломая UiInput со scoped) ─────────── */
 .input {
-  @apply w-full h-10 rounded-md px-4 bg-transparent text-white border border-white/70 placeholder:opacity-50 outline-none;
+  @apply w-full h-10 rounded-sm px-4 bg-transparent placeholder:opacity-50 outline-none;
+  color: var(--fg);
+  border: 1px solid var(--border);
 }
 .input:focus {
-  @apply ring-2 ring-[color:var(--accent)] border-white;
+  @apply ring-2;
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 0;            /* избегаем двойного фокуса с ring */
+  --tw-ring-color: var(--accent);
 }
 
-/* Ошибки */
-.field--error .input {
-  @apply border-red-500 ring-0;
+@layer components {
+  /* ── РАМКА/СЦЕНА ─────────────────────────────────────────────────────── */
+
+  /* 1) Центровка сцены только на больших экранах */
+  /* @media (min-width:1024px) and (min-height:768px) { */
+  /*   .stage { */
+  /*     display: grid; */
+  /*     place-content: center; */
+  /*     min-height: 100vh; */
+  /*   } */
+  /* } */
+
+  /* 2) Рамка должна быть относительным контейнером для абсолютного .header */
+  .frame {
+    position: relative; /* добавка */
+    @apply mx-auto w-full max-w-[944px] border-2;
+    border-color: var(--border-strong); /* белые в тёмной / чёрные в светлой */
+
+    /* @apply lg:mt-20 lg:min-h-[624px]; */
+    @apply min-h-[624px];
+  }
+
+  /* 3) Хедер: базово в потоке, но на больших — «вынут» на 12px выше рамки */
+  .header {
+    /* @apply pt-6 px-4 lg:pt-[34px] lg:pl-[40px]; */
+    @apply mx-auto max-w-[944px]; /* выравнивание по содержимому рамки */
+    @apply pt-6 lg:pt-[34px] mb-3; /* 12px = mb-3 */
+
+    /* важно: хедер визуально относится к .frame, поэтому ограничиваем ширину */
+    width: 100%;
+    max-width: 944px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* @media (min-width:1024px) and (min-height:768px) { */
+  /*   .header { */
+  /*     position: absolute; */
+  /*     left: 0; */
+  /*     right: 0; */
+  /*     bottom: calc(100% + 12px); /1* та самая «линией выше» *1/ */
+  /*     padding: 0 40px;           /1* как в макете *1/ */
+  /*     margin-bottom: 0;          /1* убираем mb-3, раз он absolute *1/ */
+  /*   } */
+  /* } */
+
+  .header__title {
+    @apply text-[28px] leading-[1.1] font-normal;
+    text-decoration-color: var(--fg);
+  }
+
+  .page {
+    /* правая колонка по макету, но без жёстких позиций: компактная колонка */
+    display: grid;
+    justify-items: center;
+  }
+  /* Заголовок страниц внутри рамки (login/register/etc) */
+  .page__title {
+    @apply font-normal;
+    font-family: var(--font-sans);
+    font-size: 1.5rem;        /* 24px — 8pt-friendly вместо 26px */
+    line-height: 1.1;
+  }
+
+  /* ── ЛЕЙАУТ ──────────────────────────────────────────────────────────── */
+
+  /* 4) Сетка: явно включаем grid на мобилке (чтобы aside не прыгал) */
+  .layout {
+    display: grid; /* добавка — на мобилке тоже grid */
+    grid-template-columns: 1fr;
+    row-gap: 0;
+    @apply lg:grid lg:grid-cols-[176px_1fr] lg:gap-x-16 lg:pr-20;
+  }
+
+  /* @media (min-width:1024px) { */
+  /*   .layout { */
+  /*     grid-template-columns: 176px 1fr; /1* эквивалент lg:grid-cols-[176px_1fr] *1/ */
+  /*     column-gap: 4rem;                 /1* 64px — эквивалент lg:gap-x-16 *1/ */
+  /*     padding-right: 5rem;              /1* 80px — эквивалент lg:pr-20 *1/ */
+  /*   } */
+  /* } */
+
+  /* ── САЙДБАР ─────────────────────────────────────────────────────────── */
+  .sidebar {
+    @apply pt-8 lg:block w-[176px] h-[504px] self-start;
+    border: 1px solid var(--border);
+  }
+
+  /* .sidebar__nav { border-top: 1px solid var(--muted); } */
+
+  /* .sidebar__nav > * + * { border-top: 1px solid var(--muted); } */
+
+  .sidebar__link {
+    @apply block pl-8 pr-4 py-3;
+    text-decoration-color: var(--fg);
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: var(--overlay);
+    }
+  }
+  .sidebar__link--active {
+    @apply -ml-px h-12 w-[176px] py-3 pl-8;
+    border: 1px solid var(--border-strong);
+    background-color: color-mix(in srgb, var(--fg) 16%, transparent); /* = var(--overlay) */
+    text-decoration: none;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--fg) 16%, transparent); /* = var(--overlay) */
+    }
+  }
+  .sidebar__button {
+    @apply block pl-8 pr-4 py-3;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: left;
+    text-decoration-color: var(--fg);
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: var(--overlay);
+    }
+  }
+
+  /* ── ТАБЛИЦА ДЛЯ /movies ────────────────────────────────────────────── */
+  .table { @apply w-full text-left; }
+  .table thead {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 40px; /* как в макете */
+      right: 80px; /* как в макете */
+      bottom: 0;
+      height: 1px;
+      background: var(--border-strong);
+    }
+  }
+  .table__row { border-top: 0; }
+  .table__th { @apply text-[14px] leading-[1.2] font-normal py-3; }
+  .table__td { @apply text-[16px] leading-[1.2] font-normal py-4; }
+
+  /* Медиа-ячейка */
+  .media { @apply flex items-center gap-4; }
+  .media__thumb {
+    @apply w-10 h-10 rounded flex items-center justify-center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  /* ── КНОПКИ ──────────────────────────────────────────────────────────── */
+  /* .btn { @apply inline-flex items-center justify-center h-9 px-[10px] rounded-sm text-[12px] leading-none; } */
+  /* .btn--outline { */
+  /*   border: 1px solid var(--border-strong); */
+  /*   background: transparent; */
+  /* } */
+  /* .btn--outline:hover { background: color-mix(in srgb, var(--fg) 8%, transparent); } /1* = overlay через токены *1/ */
+  /* .btn--solid { color: var(--accent-contrast); background: var(--accent); } */
+
+  /* ── ССЫЛКИ ─────────────────────────────────────────────────────────── */
+  .link {
+    text-decoration: underline;
+    text-decoration-color: var(--fg);
+  }
 }
 
-.field__icon {
-  @apply absolute right-3 top-1/2 -translate-y-1/2 text-red-500 text-sm select-none;
-}
-
-/* Токены */
-html {
-  font-family:
-    'Open Sans',
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    'Noto Sans',
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol';
-}

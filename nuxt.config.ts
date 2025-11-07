@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   typescript: { strict: true, typeCheck: true },
   modules: ['@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt'],
   runtimeConfig: {
-    public: { API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:8080' },
+    public: { API_BASE_URL: process.env.API_BASE_URL || '' },
   },
   imports: {
     // добавляем директорию stores к автоимпортируемым
@@ -42,6 +42,7 @@ export default defineNuxtConfig({
         provider: 'google',
         weights: [400, 500, 600, 700],
         display: 'swap',
+        subsets: ['cyrillic','latin'],
       },
     ],
   },
