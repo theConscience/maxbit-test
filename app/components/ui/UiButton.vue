@@ -1,13 +1,15 @@
 <template>
-  <NuxtLink v-if="showLink" :to="to" class="btn" :class="classes" v-bind="$attrs">
+  <!-- Ссылка -->
+  <NuxtLink v-if="showLink" :to="to" class="btn" :class="btnClasses" v-bind="$attrs">
     <slot>{{ label }}</slot>
   </NuxtLink>
 
+  <!-- Кнопка -->
   <button
     v-else
     class="btn"
+    :class="btnClasses"
     :disabled="disabled"
-    :class="classes"
     v-bind="$attrs"
     @click="$emit('click', $event)"
   >
@@ -21,36 +23,70 @@ const props = withDefaults(
     to?: string
     label?: string
     variant?: 'solid' | 'outline'
+    size?: 'sm' | 'md' | 'lg'
+    block?: boolean
     disabled?: boolean
   }>(),
-  { variant: 'outline', disabled: false },
+  {
+    variant: 'outline',
+    size: 'md', // 8-pt: sm=32, md=40, lg=48
+    block: false,
+    disabled: false,
+  },
 )
-const showLink = ref(!!props.to && !props.disabled)
-const classes = computed(() => (props.variant === 'outline' ? 'btn--outline' : 'btn--solid'))
+
+const showLink = computed(() => !!props.to && !props.disabled)
+
+const btnClasses = computed(() => [
+  props.variant === 'outline' ? 'btn--outline' : 'btn--solid',
+  props.size === 'sm' ? 'btn--sm' : props.size === 'lg' ? 'btn--lg' : 'btn--md',
+  props.block ? 'btn--block' : '',
+])
 defineEmits<{ (e: 'click', ev: MouseEvent): void }>()
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
-  padding: 0 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  line-height: 1;
+  gap: 8px;
+  padding-inline: 12px;
+  border-radius: 5px;
+  border-width: 1px;
+  font-weight: 400;
+  letter-spacing: 0;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
 }
+.btn--sm {
+  height: 32px;
+  font-size: 12px;
+  padding-inline: 10px;
+}
+.btn--md {
+  height: 40px;
+  font-size: 14px;
+  padding-inline: 12px;
+}
+.btn--lg {
+  height: 48px;
+  font-size: 16px;
+  padding-inline: 16px;
+}
+
 .btn--outline {
-  border: 1px solid var(--border-strong);
+  color: var(--fg);
   background: transparent;
+  border-color: var(--border-strong);
 }
 .btn--outline:hover {
   background: var(--overlay);
 }
+
 .btn--solid {
   color: var(--accent-contrast);
   background: var(--accent);
-  border: 1px solid var(--accent);
+  border-color: var(--accent);
 }
 </style>

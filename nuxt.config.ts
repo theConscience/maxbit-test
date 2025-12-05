@@ -46,6 +46,17 @@ export default defineNuxtConfig({
       },
     ],
   },
+  icon: {
+    customCollections: [
+      {
+        prefix: 'app',             // как будем вызывать
+        dir: 'app/assets/icons',       // где лежат svg
+      },
+    ],
+  },
+  image: {
+    domains: ['localhost:3022'],
+  },
   app: {
     head: {
       htmlAttrs: {

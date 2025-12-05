@@ -1,13 +1,15 @@
 <template>
-  <section>
-    <h1 class="card__title mb-4">Выбор мест</h1>
+  <section class="page session">
+    <h1 class="page__title mb-4">Выбрать места</h1>
 
     <div v-if="pending" class="py-6"><UiSpinner /></div>
     <UiAlert v-else-if="error" type="error" text="Не удалось загрузить сеанс" />
 
-    <div v-else-if="session">
-      <p class="mb-4 opacity-80">
-        Кинотеатр: {{ session.cinemaName || '—' }} · Начало: {{ formatDateTime(session.startsAt) }}
+    <div class="flex flex-col items-center w-full overflow-x-auto" v-else-if="session">
+      <p class="mb-4 opacity-80 self-start max-w-[360px]">
+        Фильм: {{ session.movieTitle || '-'}}<br/>
+        Кинотеатр: {{ session.cinemaName || '—' }}<br/>
+        Начало: {{ formatDateTime(session.startsAt) }}
       </p>
 
       <SeatMap
@@ -15,11 +17,19 @@
         :cols="session.cols || 12"
         :booked="session.bookedSeats || []"
         v-model="selected"
-        class="mb-4"
+        :readonly="!isAuthed"
+        class="mb-6"
       />
 
-      <UiButton :disabled="selected.length === 0" variant="outline" @click="book">
+      <UiButton v-if="isAuthed" :disabled="selected.length === 0" variant="outline" @click="book">
         Забронировать
+      </UiButton>
+      <UiButton
+        v-else
+        variant="outline"
+        :to="`/auth/login?next=${route.fullPath}`"
+      >
+        Войти, чтобы забронировать
       </UiButton>
     </div>
   </section>
@@ -32,10 +42,12 @@ import SeatMap from '@/components/domain/SeatMap.vue'
 const route = useRoute()
 const catalog = useCatalogStore()
 const bookings = useBookingsStore?.() // если стора ещё нет — можно временно убрать
+const auth = useAuthStore()
 
 const session = computed(() => catalog.session)
 const pending = computed(() => catalog.pending)
 const error = computed(() => catalog.error)
+const isAuthed = computed(() => auth.isAuthed)
 
 /** SeatMap эмитит ['1-2','1-3', ...] */
 const selected = ref<string[]>([])

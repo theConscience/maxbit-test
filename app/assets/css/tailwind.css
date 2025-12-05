@@ -64,60 +64,11 @@ body {
 }
 
 @layer components {
-  /* ── РАМКА/СЦЕНА ─────────────────────────────────────────────────────── */
-
-  /* 1) Центровка сцены только на больших экранах */
-  /* @media (min-width:1024px) and (min-height:768px) { */
-  /*   .stage { */
-  /*     display: grid; */
-  /*     place-content: center; */
-  /*     min-height: 100vh; */
-  /*   } */
-  /* } */
-
-  /* 2) Рамка должна быть относительным контейнером для абсолютного .header */
-  .frame {
-    position: relative; /* добавка */
-    @apply mx-auto w-full max-w-[944px] border-2;
-    border-color: var(--border-strong); /* белые в тёмной / чёрные в светлой */
-
-    /* @apply lg:mt-20 lg:min-h-[624px]; */
-    @apply min-h-[624px];
-  }
-
-  /* 3) Хедер: базово в потоке, но на больших — «вынут» на 12px выше рамки */
-  .header {
-    /* @apply pt-6 px-4 lg:pt-[34px] lg:pl-[40px]; */
-    @apply mx-auto max-w-[944px]; /* выравнивание по содержимому рамки */
-    @apply pt-6 lg:pt-[34px] mb-3; /* 12px = mb-3 */
-
-    /* важно: хедер визуально относится к .frame, поэтому ограничиваем ширину */
-    width: 100%;
-    max-width: 944px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* @media (min-width:1024px) and (min-height:768px) { */
-  /*   .header { */
-  /*     position: absolute; */
-  /*     left: 0; */
-  /*     right: 0; */
-  /*     bottom: calc(100% + 12px); /1* та самая «линией выше» *1/ */
-  /*     padding: 0 40px;           /1* как в макете *1/ */
-  /*     margin-bottom: 0;          /1* убираем mb-3, раз он absolute *1/ */
-  /*   } */
-  /* } */
-
-  .header__title {
-    @apply text-[28px] leading-[1.1] font-normal;
-    text-decoration-color: var(--fg);
-  }
-
   .page {
     /* правая колонка по макету, но без жёстких позиций: компактная колонка */
     display: grid;
     justify-items: center;
+    width: 100%;
   }
   /* Заголовок страниц внутри рамки (login/register/etc) */
   .page__title {
@@ -125,66 +76,6 @@ body {
     font-family: var(--font-sans);
     font-size: 1.5rem;        /* 24px — 8pt-friendly вместо 26px */
     line-height: 1.1;
-  }
-
-  /* ── ЛЕЙАУТ ──────────────────────────────────────────────────────────── */
-
-  /* 4) Сетка: явно включаем grid на мобилке (чтобы aside не прыгал) */
-  .layout {
-    display: grid; /* добавка — на мобилке тоже grid */
-    grid-template-columns: 1fr;
-    row-gap: 0;
-    @apply lg:grid lg:grid-cols-[176px_1fr] lg:gap-x-16 lg:pr-20;
-  }
-
-  /* @media (min-width:1024px) { */
-  /*   .layout { */
-  /*     grid-template-columns: 176px 1fr; /1* эквивалент lg:grid-cols-[176px_1fr] *1/ */
-  /*     column-gap: 4rem;                 /1* 64px — эквивалент lg:gap-x-16 *1/ */
-  /*     padding-right: 5rem;              /1* 80px — эквивалент lg:pr-20 *1/ */
-  /*   } */
-  /* } */
-
-  /* ── САЙДБАР ─────────────────────────────────────────────────────────── */
-  .sidebar {
-    @apply pt-8 lg:block w-[176px] h-[504px] self-start;
-    border: 1px solid var(--border);
-  }
-
-  /* .sidebar__nav { border-top: 1px solid var(--muted); } */
-
-  /* .sidebar__nav > * + * { border-top: 1px solid var(--muted); } */
-
-  .sidebar__link {
-    @apply block pl-8 pr-4 py-3;
-    text-decoration-color: var(--fg);
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-      background-color: var(--overlay);
-    }
-  }
-  .sidebar__link--active {
-    @apply -ml-px h-12 w-[176px] py-3 pl-8;
-    border: 1px solid var(--border-strong);
-    background-color: color-mix(in srgb, var(--fg) 16%, transparent); /* = var(--overlay) */
-    text-decoration: none;
-
-    &:hover {
-      background-color: color-mix(in srgb, var(--fg) 16%, transparent); /* = var(--overlay) */
-    }
-  }
-  .sidebar__button {
-    @apply block pl-8 pr-4 py-3;
-    box-sizing: border-box;
-    width: 100%;
-    text-align: left;
-    text-decoration-color: var(--fg);
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-      background-color: var(--overlay);
-    }
   }
 
   /* ── ТАБЛИЦА ДЛЯ /movies ────────────────────────────────────────────── */
@@ -195,24 +86,44 @@ body {
     &::after {
       content: '';
       position: absolute;
-      left: 40px; /* как в макете */
-      right: 80px; /* как в макете */
+      /* left: 40px; /1* как в макете *1/ */
+      /* right: 80px; /1* как в макете *1/ */
+      left: 0;
+      right: 0;
       bottom: 0;
       height: 1px;
       background: var(--border-strong);
     }
   }
   .table__row { border-top: 0; }
-  .table__th { @apply text-[14px] leading-[1.2] font-normal py-3; }
-  .table__td { @apply text-[16px] leading-[1.2] font-normal py-4; }
+  .table__th { @apply text-[14px] leading-[1.2] font-normal py-3 break-words; }
+  .table__td { @apply text-[16px] leading-[1.2] font-normal py-4 break-words; }
 
   /* Медиа-ячейка */
   .media { @apply flex items-center gap-4; }
+  .media--top { @apply items-start }
+
+  .media__thumb-img {
+    /* width: 100%; */
+    width: 96px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px; /* чуть меньше, чем контейнер, чтобы не «выпирал» */
+    background-color: transparent;
+    padding: 4px;
+    text-align: center;
+  }
   .media__thumb {
     @apply w-10 h-10 rounded flex items-center justify-center;
     background: var(--surface);
     border: 1px solid var(--border);
   }
+  .media__title {
+    .media--top & {
+      @apply pt-3
+    }
+  }
+
 
   /* ── КНОПКИ ──────────────────────────────────────────────────────────── */
   /* .btn { @apply inline-flex items-center justify-center h-9 px-[10px] rounded-sm text-[12px] leading-none; } */

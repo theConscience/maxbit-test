@@ -61,7 +61,6 @@ export type Settings = {
 function safeRandomUUID(): string {
   // если есть Web Crypto / Node Crypto c randomUUID
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-    // @ts-expect-error: рантайм проверен
     return crypto.randomUUID()
   }
 
@@ -155,6 +154,24 @@ export function seed(force = false) {
       posterImage: '/static/images/posters/dark_knight.jpg',
       lengthMinutes: 152,
       description: 'Когда Джокер сеет хаос в Готэме, Бэтмен сталкивается с пределами морали.',
+    },
+    {
+      id: movieSeq++,
+      title: 'Великая красота',
+      year: 2001,
+      rating: 8.3,
+      posterImage: '',
+      lengthMinutes: 100,
+      description: 'Какое-то описание, фильм без постера',
+    },
+    {
+      id: movieSeq++,
+      title: 'Зомбилэнд',
+      year: 2010,
+      rating: 7.5,
+      posterImage: '',
+      lengthMinutes: 152,
+      description: 'Какое-то описание, фильм без постера',
     },
   ]
   db.movies.push(...movies)
