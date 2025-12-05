@@ -55,67 +55,6 @@
       <template #empty>Фильмы не найдены.</template>
     </UiTable>
 
-    <!-- <div v-if="pending" class="py-6"> -->
-    <!--   <UiSpinner /> -->
-    <!-- </div> -->
-
-    <!-- <UiAlert v-else-if="error" type="error" text="Не удалось загрузить фильмы" /> -->
-
-    <!-- <div v-else class="movies-table-wrap" aria-label="Список фильмов"> -->
-    <!--   <table class="table movies-table"> -->
-    <!--     <caption class="sr-only"> -->
-    <!--       Список фильмов с продолжительностью и рейтингом -->
-    <!--     </caption> -->
-    <!--     <colgroup> -->
-    <!--       <col class="table__col-main"> -->
-    <!--       <col class="table__col-narrow"> -->
-    <!--       <col class="table__col-thin"> -->
-    <!--       <col class="table__col-medium"> -->
-    <!--     </colgroup> -->
-    <!--     <thead class="pl-[40px]"> -->
-    <!--       <tr> -->
-    <!--         <th scope="col" class="table__th pl-[32px] pr-4 text-right -->
-    <!--           align-bottom">Название</th> -->
-    <!--         <th scope="col" class="table__th px-4">Продолжительность</th> -->
-    <!--         <th scope="col" class="table__th px-4">Рейтинг</th> -->
-    <!--         <th scope="col" class="table__th pr-20 text-right"></th> -->
-    <!--       </tr> -->
-    <!--     </thead> -->
-    <!--     <tbody> -->
-    <!--       <tr v-for="m in movies" :key="m.id" class="table__row"> -->
-    <!--         <!-1- фиксированная колонка с переносами -1-> -->
-    <!--         <td class="table__td pl-[32px] pr-4 movies-col-title"> -->
-    <!--           <div class="media"> -->
-    <!--             <div class="media__thumb movies-thumb"> -->
-    <!--               <Icon name="app:i-placeholder-2" class="movies-thumb__icon" aria-hidden="true" /> -->
-    <!--             </div> -->
-    <!--             <span class="movies-title"> -->
-    <!--               {{ m.title }} -->
-    <!--             </span> -->
-    <!--           </div> -->
-    <!--         </td> -->
-
-    <!--         <td class="table__td px-4 movies-col-duration"> -->
-    <!--           {{ toHm(m.durationMin) }} -->
-    <!--         </td> -->
-
-    <!--         <td class="table__td px-4"> -->
-    <!--           {{ (m.rating ?? 0).toFixed(2) }} -->
-    <!--         </td> -->
-
-    <!--         <td class="table__td pr-[24px]"> -->
-    <!--           <div class="flex justify-end"> -->
-    <!--             <UiButton :to="`/movies/${m.id}`" variant="outline" size="sm" class="w-[136px]"> -->
-    <!--               Посмотреть сеансы -->
-    <!--             </UiButton> -->
-    <!--           </div> -->
-    <!--         </td> -->
-    <!--       </tr> -->
-    <!--     </tbody> -->
-    <!--   </table> -->
-
-    <!--   <p v-if="!movies.length" class="movies-empty">Фильмы не найдены.</p> -->
-    <!-- </div> -->
   </section>
 </template>
 

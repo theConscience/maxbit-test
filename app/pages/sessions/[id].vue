@@ -41,7 +41,7 @@ import SeatMap from '@/components/domain/SeatMap.vue'
 
 const route = useRoute()
 const catalog = useCatalogStore()
-const bookings = useBookingsStore?.() // если стора ещё нет — можно временно убрать
+const bookings = useBookingsStore()
 const auth = useAuthStore()
 
 const session = computed(() => catalog.session)

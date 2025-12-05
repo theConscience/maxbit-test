@@ -93,6 +93,7 @@
             </nav>
 
             <Transition name="app-nav-hint">
+              <!-- TODO: make it adapt for mobile -->
               <div v-if="ui.navHint" :key="ui.navHint" v-html="ui.navHint" class="app-nav__hint"></div>
             </Transition>
           </aside>
@@ -196,7 +197,7 @@ const pageTitle = computed(() => {
 
 /* FRAME */
 .app-frame {
-  @apply mx-auto w-full max-w-[944px] min-h-[624px] border-2 border-strong;
+  @apply mx-auto w-full max-w-[944px] min-h-[680px] lg:min-h-[624px] border-2 border-strong;
 }
 
 /* LAYOUT */

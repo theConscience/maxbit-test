@@ -2,7 +2,7 @@
   <section class="w-full" aria-labelledby="seatmap-title">
     <h2 id="seatmap-title" class="sr-only">Схема зала</h2>
 
-    <div class="seatmap-wrap w-full max-h-[360px] overflow-auto">
+    <div class="seatmap-wrap w-full max-h-[360px] overflow-auto" ref="wrapRef">
       <div class="seatmap" :class="{ 'seatmap--compact': compact }">
         <!-- Экран -->
         <div class="seatmap__screen">Экран</div>
@@ -61,6 +61,7 @@
     </div>
   </section>
 </template>
+
 
 <script setup lang="ts">
 type SeatId = string
@@ -152,6 +153,37 @@ const selectedSeats = computed(() => {
 })
 
 const currentHint = ref('')
+
+const wrapRef = ref<HTMLElement | null>(null)
+
+function centerScroll() {
+  const el = wrapRef.value
+  if (!el) return
+
+  const scrollWidth = el.scrollWidth
+  const clientWidth = el.clientWidth
+
+  // если содержимое шире контейнера — центрируем
+  if (scrollWidth > clientWidth) {
+    el.scrollLeft = (scrollWidth - clientWidth) / 2
+  } else {
+    el.scrollLeft = 0
+  }
+}
+
+onMounted(async () => {
+  await nextTick()
+  centerScroll()
+})
+
+// если хочешь пересчитать при изменении размеров зала (на всякий случай)
+watch(
+  () => [props.rows, props.cols],
+  async () => {
+    await nextTick()
+    centerScroll()
+  },
+)
 
 watch(
   [hoverSeat, selectedSeats],

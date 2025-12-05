@@ -8,6 +8,7 @@
 
     <UiAlert v-else-if="error" type="error" text="Не удалось загрузить билеты" />
 
+    <!-- TODO: нужно привести к figma макету -->
     <div v-else class="tickets__content">
       <p v-if="!hasAny" class="tickets__empty">
         У вас пока нет билетов.

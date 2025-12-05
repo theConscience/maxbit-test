@@ -11,7 +11,6 @@
       min-width-class="min-w-[720px]"
       max-body-height-class="max-h-[568px]"
       sticky-header
-      fixed-first-col
       align-middle
     >
       <!-- Название (первая колонка) -->
@@ -45,67 +44,6 @@
       <template #empty>Кинотеатры не найдены.</template>
     </UiTable>
 
-    <!-- <div v-if="pending" class="py-6"> -->
-    <!--   <UiSpinner /> -->
-    <!-- </div> -->
-
-    <!-- <UiAlert -->
-    <!--   v-else-if="error" -->
-    <!--   type="error" -->
-    <!--   text="Не удалось загрузить кинотеатры" -->
-    <!-- /> -->
-
-    <!-- <div v-else class="cinemas-table-wrap" aria-label="Список кинотеатров"> -->
-    <!--   <table class="table cinemas-table"> -->
-    <!--     <caption class="sr-only"> -->
-    <!--       Список кинотеатров -->
-    <!--     </caption> -->
-    <!--     <colgroup> -->
-    <!--       <col> -->
-    <!--       <col class="table__col-narrow"> -->
-    <!--       <col> -->
-    <!--     </colgroup> -->
-    <!--     <thead> -->
-    <!--       <tr> -->
-    <!--         <th scope="col" class="table__th pl-5 pr-4">Кинотеатр</th> -->
-    <!--         <th scope="col" class="table__th px-4">Адрес</th> -->
-    <!--         <th scope="col" class="table__th pr-6 text-right"></th> -->
-    <!--       </tr> -->
-    <!--     </thead> -->
-
-    <!--     <tbody> -->
-    <!--       <tr v-for="с in cinemas" :key="с.id" class="table__row"> -->
-    <!--         <!-1- Название + пиктограмма -1-> -->
-    <!--         <td class="table__td pl-5 pr-4 align-top"> -->
-    <!--           <div class="media"> -->
-    <!--             <span class="whitespace-normal break-words"> -->
-    <!--               {{ с.title }} -->
-    <!--             </span> -->
-    <!--           </div> -->
-    <!--         </td> -->
-
-    <!--         <!-1- Адрес -1-> -->
-    <!--         <td class="table__td px-4"> -->
-    <!--           {{ с.address || '—' }} -->
-    <!--         </td> -->
-
-    <!--         <!-1- Кнопка -1-> -->
-    <!--         <td class="table__td pr-6"> -->
-    <!--           <div class="flex justify-end"> -->
-    <!--             <UiButton -->
-    <!--               :to="`/cinemas/${с.id}`" -->
-    <!--               variant="outline" -->
-    <!--               size="sm" -->
-    <!--               class="w-[136px]" -->
-    <!--             > -->
-    <!--               Посмотреть сеансы -->
-    <!--             </UiButton> -->
-    <!--           </div> -->
-    <!--         </td> -->
-    <!--       </tr> -->
-    <!--     </tbody> -->
-    <!--   </table> -->
-    <!-- </div> -->
   </section>
 </template>
 

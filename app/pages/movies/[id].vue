@@ -43,48 +43,6 @@
         </div>
       </header>
 
-      <!-- <!-1- список сеансов -1-> -->
-      <!-- <section v-if="groupedByDate.length" class="movie-sessions-wrap" aria-label="Доступные сеансы"> -->
-      <!--   <div class="movie-sessions"> -->
-      <!--     <ul class="movie-date-list"> -->
-      <!--       <li v-for="dateBlock in groupedByDate" :key="dateBlock.date" class="movie-date-item"> -->
-      <!--         <!-1- дата -1-> -->
-      <!--         <div class="movie-date-separator"> -->
-      <!--           {{ dateBlock.date }} -->
-      <!--         </div> -->
-
-      <!--         <!-1- список кинотеатров -1-> -->
-      <!--         <ul class="movie-cinema-list"> -->
-      <!--           <li -->
-      <!--             v-for="cinema in dateBlock.cinemas" -->
-      <!--             :key="cinema.name + dateBlock.date" -->
-      <!--             class="movie-cinema-row" -->
-      <!--           > -->
-      <!--             <div class="movie-cinema-name"> -->
-      <!--               {{ cinema.name }} -->
-      <!--             </div> -->
-
-      <!--             <!-1- список времён -1-> -->
-      <!--             <ul class="movie-time-list"> -->
-      <!--               <li v-for="s in cinema.sessions" :key="s.id" class="movie-time-item"> -->
-      <!--                 <UiButton -->
-      <!--                   variant="outline" -->
-      <!--                   size="sm" -->
-      <!--                   class="movie-time-btn" -->
-      <!--                   :to="`/sessions/${s.id}`" -->
-      <!--                 > -->
-      <!--                   <span class="sr-only"> {{ cinema.name }}, {{ dateBlock.date }}, </span> -->
-      <!--                   {{ formatTime(s.startsAt) }} -->
-      <!--                 </UiButton> -->
-      <!--               </li> -->
-      <!--             </ul> -->
-      <!--           </li> -->
-      <!--         </ul> -->
-      <!--       </li> -->
-      <!--     </ul> -->
-      <!--   </div> -->
-      <!-- </section> -->
-
       <ShowtimesList
         v-if="groupedByDate.length"
         :sessions="sessions"
