@@ -3,7 +3,6 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,8 +10,18 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
+
+env:
+  # имя репы! у тебя maxbit-test
+  NUXT_APP_BASE_URL: /maxbit-test/
+  API_MODE: mock
+  NUXT_SSR: "false"
+  GITHUB_PAGES: "true"
+
+  # чтобы не ловить duplicate artifacts на rerun
+  PAGES_ARTIFACT: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
   build:
@@ -31,29 +40,33 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Build SPA
-        env:
-          NUXT_SSR: "false"
-          API_MODE: "mock"
-          NUXT_APP_BASE_URL: "/maxbit-test/"
-        run: pnpm build
+      # ВАЖНО: generate, не build
+      - name: Generate static for GitHub Pages
+        run: pnpm generate
 
-      - name: Disable Jekyll
-        run: touch .output/public/.nojekyll
-
-      - name: SPA fallback for deep links
+      # SPA fallback
+      - name: SPA 404 fallback
         run: cp .output/public/index.html .output/public/404.html
 
-      - uses: actions/upload-pages-artifact@v3
+      # На всякий случай — сразу увидишь, есть ли index.html
+      - name: Debug public output
+        run: ls -la .output/public | head -n 200
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
+          name: ${{ env.PAGES_ARTIFACT }}
           path: .output/public
 
   deploy:
-    needs: build
     runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT }}

@@ -2,11 +2,13 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import { fileURLToPath } from 'node:url'
 
+const isGhPages = process.env.GITHUB_PAGES === 'true'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   srcDir: 'app/',
-  ssr: true,
+  ssr: !isGhPages,
   typescript: { strict: true, typeCheck: true },
   modules: ['@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt'],
   runtimeConfig: {
@@ -70,7 +72,10 @@ export default defineNuxtConfig({
       meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
     },
   },
-  nitro: { preset: 'node-server' }, // для SSR-режима по умолчанию
+  // nitro: { preset: 'node-server' }, // для SSR-режима по умолчанию
+  nitro: {
+    preset: isGhPages ? 'static' : 'node-server',
+  },
 
   // === Aliases (на всякий случай) ===
   alias: {
