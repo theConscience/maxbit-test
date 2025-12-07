@@ -22,7 +22,8 @@
     "fix": "pnpm fix:eslint && pnpm fix:style && pnpm format",
     "check": "pnpm typecheck && pnpm lint && pnpm format:check",
     "postinstall": "nuxt prepare",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build:gh": "cross-env NUXT_SSR=false API_MODE=mock NUXT_APP_BASE_URL=/maxbit-cinema-test/ nuxt build"
   },
   "dependencies": {
     "@nuxt/fonts": "0.11.4",

@@ -61,6 +61,7 @@ export default defineNuxtConfig({
     domains: ['localhost:3022'],
   },
   app: {
+    baseURL: process.env.NUXT_APP_BASE_URL || '/',   // ← вот это
     head: {
       htmlAttrs: {
         lang: 'ru',
