@@ -10,7 +10,10 @@ export default defineNuxtConfig({
   typescript: { strict: true, typeCheck: true },
   modules: ['@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt'],
   runtimeConfig: {
-    public: { API_BASE_URL: process.env.API_BASE_URL || '' },
+    public: {
+      API_BASE_URL: process.env.API_BASE_URL || '',
+      API_MODE: process.env.API_MODE || "bff", // 'bff' | 'mock
+    },
   },
   imports: {
     // добавляем директорию stores к автоимпортируемым

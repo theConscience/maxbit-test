@@ -170,7 +170,8 @@ const groupedByDate = computed(() => {
 }
 .movie-poster__img {
   width: 100%;
-  height: 100%;
+  max-width:240px;
+  height: auto;
   object-fit: cover;
   border-radius: .5rem; /* под rounded-lg */
 }

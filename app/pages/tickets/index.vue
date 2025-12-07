@@ -18,7 +18,6 @@
         <!-- Не оплаченные -->
         <section v-if="unpaid.length" class="tickets__section">
           <h2 class="tickets__section-title">Не оплаченные</h2>
-          <div class="tickets__section-line" />
 
           <ul class="tickets__list">
             <li
@@ -80,7 +79,6 @@
         <!-- Будущие -->
         <section v-if="upcoming.length" class="tickets__section">
           <h2 class="tickets__section-title">Будущие</h2>
-          <div class="tickets__section-line" />
 
           <ul class="tickets__list">
             <li
@@ -123,7 +121,6 @@
         <!-- Прошедшие -->
         <section v-if="past.length" class="tickets__section">
           <h2 class="tickets__section-title">Прошедшие</h2>
-          <div class="tickets__section-line" />
 
           <ul class="tickets__list">
             <li
@@ -234,11 +231,7 @@ function formatDateLine(iso: string) {
 }
 
 .tickets__section-title {
-  @apply text-[13px] uppercase tracking-[0.08em] mb-2 opacity-80;
-}
-
-.tickets__section-line {
-  @apply border-t border-border mb-2;
+  @apply text-[13px] mb-2 opacity-80;
 }
 
 /* список/строки */

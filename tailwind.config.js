@@ -24,7 +24,9 @@ export default {
       },
       borderRadius: { xl: "1rem" },
       boxShadow: { soft: "0 2px 10px rgba(0,0,0,.05)" },
-      fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+      },
     },
     container: {
       center: true,
