@@ -1,4 +1,6 @@
+import { joinURL, hasProtocol } from 'ufo'
 import { defineStore } from 'pinia'
+
 import type {
   // сырой контракт DTO
   ApiMovie,
@@ -10,6 +12,27 @@ import type {
   Cinema,
   Session,
 } from '@/types/api'
+
+
+function resolvePosterUrl(posterImage: string): string {
+  const { public: { API_BASE_URL = '' }, app } = useRuntimeConfig()
+
+  if (!posterImage) return ''
+
+  // если вдруг прилетит уже абсолютная ссылка — не трогаем
+  if (hasProtocol(posterImage)) return posterImage
+
+  const poster = posterImage.replace(/^\/+/, '')
+  const posterPath = poster.startsWith('static/')
+    ? poster
+    : `static/images/posters/${poster}`
+
+  // 1) если API_BASE_URL задан — используем его (хоть абсолютный, хоть относительный)
+  // 2) если пусто — используем app.baseURL (для gh-pages)
+  const base = API_BASE_URL ? API_BASE_URL : app.baseURL
+
+  return joinURL(base, posterPath)
+}
 
 function mapMovie(m: ApiMovie): Movie {
   const { public: { API_BASE_URL = '' } } = useRuntimeConfig()
@@ -28,7 +51,7 @@ function mapMovie(m: ApiMovie): Movie {
     year: m.year,
     durationMin: m.lengthMinutes,
     rating: m.rating,
-    posterUrl: m.posterImage ? `${urlBase}/${posterPath}` : '',
+    posterUrl: resolvePosterUrl(m.posterImage),
   }
 }
 
