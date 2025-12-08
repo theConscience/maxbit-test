@@ -184,7 +184,7 @@ const groupedByDate = computed(() => {
 
 /* описание */
 .movie-desc {
-  @apply font-sans-token text-[13px] leading-tight text-fg max-w-[420px] md:max-w-[520px];
+  @apply font-sans-token text-[13px] leading-normal text-fg max-w-[420px] md:max-w-[520px];
 }
 
 /* мета-инфа */

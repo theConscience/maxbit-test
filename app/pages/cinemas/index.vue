@@ -8,7 +8,7 @@
       :loading="pending"
       :error-text="error ? 'Не удалось загрузить кинотеатры' : null"
       caption="Список кинотеатров"
-      min-width-class="min-w-[720px]"
+      min-width-class="min-w-[720px] lg:min-w-[640px]"
       max-body-height-class="max-h-[568px]"
       sticky-header
       align-middle

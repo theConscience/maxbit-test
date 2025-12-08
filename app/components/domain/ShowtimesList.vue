@@ -226,13 +226,19 @@ const blocks = computed<DateBlock[]>(() => {
 }
 .stl__date {
   margin-top: 24px;
+  padding-left: 0;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-strong);
   font-size: 14px;
   line-height: 1;
 }
+@screen sm {
+  .stl__date {
+    padding-left: 24px;
+  }
+}
 .stl__row {
-  @apply flex items-center justify-between gap-4 border-t border-border py-4;
+  @apply flex items-center justify-between gap-4 border-t border-border py-4 sm:px-6;
 }
 .stl__entity {
   @apply flex items-center gap-3;

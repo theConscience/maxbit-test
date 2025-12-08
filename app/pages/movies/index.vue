@@ -8,7 +8,7 @@
       :loading="pending"
       :error-text="error ? 'Не удалось загрузить фильмы' : null"
       caption="Список фильмов с продолжительностью и рейтингом"
-      min-width-class="min-w-[720px]"
+      min-width-class="min-w-[720px] lg:min-w-[640px]"
       max-body-height-class="max-h-[568px]"
       sticky-header
       align-middle

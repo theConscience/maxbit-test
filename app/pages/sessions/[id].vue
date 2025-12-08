@@ -6,7 +6,7 @@
     <UiAlert v-else-if="error" type="error" text="Не удалось загрузить сеанс" />
 
     <div class="flex flex-col items-center w-full overflow-x-auto" v-else-if="session">
-      <p class="mb-4 opacity-80 self-start max-w-[360px]">
+      <p class="mb-4 opacity-80 self-start max-w-[360px] text-[13px]">
         Фильм: {{ session.movieTitle || '-'}}<br/>
         Кинотеатр: {{ session.cinemaName || '—' }}<br/>
         Начало: {{ formatDateTime(session.startsAt) }}

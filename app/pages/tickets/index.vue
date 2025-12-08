@@ -25,7 +25,7 @@
               :key="b.id"
               class="tickets__row"
             >
-              <!-- Левая колонка: фильм / кинотеатр / дата-время -->
+              <!--  фильм / кинотеатр / дата-время -->
               <div class="tickets__col tickets__col--main">
                 <div class="tickets__movie">
                   {{ b.movieTitle || b.sessionTitle }}
@@ -38,7 +38,7 @@
                 </div>
               </div>
 
-              <!-- Средняя колонка: места -->
+              <!-- места -->
               <div
                 v-if="seatLines(b).length"
                 class="tickets__col tickets__col--seats"
@@ -52,7 +52,7 @@
                 </p>
               </div>
 
-              <!-- Правая колонка: оплата + таймер -->
+              <!-- оплата -->
               <div class="tickets__col tickets__col--actions">
                 <UiButton
                   size="sm"
@@ -62,7 +62,10 @@
                 >
                   Оплатить
                 </UiButton>
+              </div>
 
+              <!-- таймер -->
+              <div class="tickets__col tickets__col--actions">
                 <div class="tickets__timer-wrap">
                   <span class="tickets__timer-label">Осталось</span>
                   <UiCountdown
@@ -244,7 +247,8 @@ function formatDateLine(iso: string) {
 
 .tickets__row {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 1fr)
+  minmax(0, 1fr);
   @apply items-center gap-x-8 gap-y-2 py-4 border-t border-border;
 }
 
@@ -283,7 +287,7 @@ function formatDateLine(iso: string) {
 }
 
 .tickets__seat-line {
-  @apply text-[14px];
+  @apply text-[16px];
 }
 
 /* кнопка оплаты / таймер */
