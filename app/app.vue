@@ -9,10 +9,7 @@
 
   <!-- Глобальный лейаут -->
   <NuxtLayout>
-    <!-- Плавные переходы между страницами -->
-    <Transition name="page" mode="out-in">
-      <NuxtPage id="app-main" />
-    </Transition>
+    <NuxtPage id="app-main" />
   </NuxtLayout>
 
   <!-- Озвучивание смены маршрутов (A11y) -->

@@ -380,6 +380,20 @@ function epGetSettings() {
   return { status: 200, body }
 }
 
+/** === Класс ошибки mock-API, чтобы из useApi можно было смотреть status === */
+export class MockApiError extends Error {
+  status: number
+  body: any
+
+  constructor(status: number, body: any, message?: string) {
+    const msg = (body && (body as any).message) || message || 'Mock API error'
+    super(msg)
+    this.name = 'MockApiError'
+    this.status = status
+    this.body = body
+  }
+}
+
 /** === Тип функции API и фабрика === */
 
 export type ClientApiFn = <T = any>(
@@ -405,12 +419,21 @@ export function createClientApi(): ClientApiFn {
     // auth
     if (segments.length === 1 && segments[0] === 'login' && method === 'POST') {
       const r = epLogin(body?.username ?? '', body?.password ?? '')
-      if (r.status >= 400) throw new Error((r.body as any).message || 'Login error')
+      if (r.status >= 400) {
+        // ← здесь уже летит MockApiError со статусом
+        throw new MockApiError(r.status, r.body, (r.body as any).message || 'Login error')
+      }
       return r.body as T
     }
     if (segments.length === 1 && segments[0] === 'register' && method === 'POST') {
       const r = epRegister(body?.username ?? '', body?.password ?? '')
-      if (r.status >= 400) throw new Error((r.body as any).message || 'Register error')
+      if (r.status >= 400) {
+        throw new MockApiError(
+          r.status,
+          r.body,
+          (r.body as any).message || 'Register error',
+        )
+      }
       return r.body as T
     }
 
@@ -426,7 +449,13 @@ export function createClientApi(): ClientApiFn {
     ) {
       const movieId = Number(segments[1])
       const r = epGetMovieSessionsByMovie(movieId)
-      if (r.status >= 400) throw new Error((r.body as any).message || 'Movie sessions error')
+      if (r.status >= 400) {
+        throw new MockApiError(
+          r.status,
+          r.body,
+          (r.body as any).message || 'Movie sessions error',
+        )
+      }
       return r.body as T
     }
 
@@ -441,7 +470,13 @@ export function createClientApi(): ClientApiFn {
     ) {
       const cinemaId = Number(segments[1])
       const r = epGetMovieSessionsByCinema(cinemaId)
-      if (r.status >= 400) throw new Error((r.body as any).message || 'Cinema sessions error')
+      if (r.status >= 400) {
+        throw new MockApiError(
+          r.status,
+          r.body,
+          (r.body as any).message || 'Cinema sessions error',
+        )
+      }
       return r.body as T
     }
 
@@ -449,7 +484,13 @@ export function createClientApi(): ClientApiFn {
     if (segments.length === 2 && segments[0] === 'movieSessions' && method === 'GET') {
       const id = Number(segments[1])
       const r = epGetMovieSessionDetails(id)
-      if (r.status >= 400) throw new Error((r.body as any).message || 'Session not found')
+      if (r.status >= 400) {
+        throw new MockApiError(
+          r.status,
+          r.body,
+          (r.body as any).message || 'Session not found',
+        )
+      }
       return r.body as T
     }
 
@@ -463,7 +504,13 @@ export function createClientApi(): ClientApiFn {
       const id = Number(segments[1])
       const seats = (body?.seats || []) as ApiSeat[]
       const r = epCreateBooking(token, id, seats)
-      if (r.status >= 400) throw new Error((r.body as any).message || 'Booking error')
+      if (r.status >= 400) {
+        throw new MockApiError(
+          r.status,
+          r.body,
+          (r.body as any).message || 'Booking error',
+        )
+      }
       return r.body as T
     }
 
@@ -476,7 +523,13 @@ export function createClientApi(): ClientApiFn {
     ) {
       const bookingId = segments[1] as string
       const r = epPayBooking(token, bookingId)
-      if (r.status >= 400) throw new Error((r.body as any).message || 'Payment error')
+      if (r.status >= 400) {
+        throw new MockApiError(
+          r.status,
+          r.body,
+          (r.body as any).message || 'Payment error',
+        )
+      }
       return r.body as T
     }
 
@@ -488,7 +541,13 @@ export function createClientApi(): ClientApiFn {
       method === 'GET'
     ) {
       const r = epGetMyBookings(token)
-      if (r.status >= 400) throw new Error((r.body as any).message || 'My bookings error')
+      if (r.status >= 400) {
+        throw new MockApiError(
+          r.status,
+          r.body,
+          (r.body as any).message || 'My bookings error',
+        )
+      }
       return r.body as T
     }
 
@@ -497,9 +556,13 @@ export function createClientApi(): ClientApiFn {
       return epGetSettings().body as T
     }
 
-    throw new Error(`clientApi: Unsupported path/method ${method} ${path}`)
+    // если вообще не совпало с маршрутом — тоже через MockApiError
+    throw new MockApiError(
+      404,
+      { message: `clientApi: Unsupported path/method ${method} ${path}` },
+    )
   }
 }
 
-// удобный синглтон, если не хочешь каждый раз дергать createClientApi
+// удобный синглтон, если не хочется каждый раз дергать createClientApi
 export const clientApi: ClientApiFn = createClientApi()

@@ -1,5 +1,6 @@
 import { useRuntimeConfig } from '#imports'
-import { clientApi, type ClientApiFn } from '@/mocks/clientApi'
+import { clientApi, type ClientApiFn, MockApiError } from '@/mocks/clientApi'
+import { useAuthStore } from '@/stores/auth'
 
 export type ApiFn = <T = any>(
   path: string,
@@ -28,7 +29,28 @@ export const useApi = (): ApiFn => {
       // В clientApi path без `/api`
       const cleanPath = path.replace(/^\/+/, '') // '/movies' → 'movies'
 
-      return api<T>(cleanPath, { method, body, headers })
+      try {
+        // обращение к mock-API
+        return await api<T>(cleanPath, { method, body, headers })
+      } catch (err: any) {
+        // NOTE: если in-memory БД ресетнулась, токен умер и
+        // MockApiError со статусом 401 → ведём себя так же, как в BFF-режиме:
+        // чистим auth и уводим на логин
+        if (
+          err instanceof MockApiError &&
+          err.status === 401 &&
+          cleanPath !== 'login' &&
+          cleanPath !== 'register'
+        ) {
+          auth.logout()
+          if (process.client) {
+            navigateTo('/auth/login')
+          }
+        }
+
+        // остальное пусть летит дальше, чтобы UI показал тост/ошибку
+        throw err
+      }
     }
   } else {
     console.info('[useApi] BFF MODE (/_db or real backend)', {
@@ -55,6 +77,7 @@ export const useApi = (): ApiFn => {
       },
     })
 
-    return <T = any>(path: string, options: any = {}): Promise<T> => ofetchApi<T>(path, options)
+    return <T = any>(path: string, options: any = {}): Promise<T> =>
+      ofetchApi<T>(path, options)
   }
 }

@@ -8,38 +8,40 @@
             {{ pageTitle }}
           </h1>
 
-          <div class="app-header__controls">
-            <button
-              class="app-header__theme"
-              :title="isDark ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'"
-              @click="toggle"
-            >
-              <Icon
-                v-if="isDark"
-                name="i-heroicons-moon-20-solid"
-                aria-hidden="true"
-                class="app-header__theme-icon"
-              />
-              <Icon
-                v-else
-                name="i-heroicons-sun-20-solid"
-                aria-hidden="true"
-                class="app-header__theme-icon"
-              />
-              <!-- Текст на случай, если иконка не загрузилась + для скринридеров -->
-              <span class="sr-only">{{ isDark ? 'Тёмная тема' : 'Светлая тема' }}</span>
-            </button>
+          <ClientOnly>
+            <div class="app-header__controls">
+              <button
+                class="app-header__theme"
+                :title="isDark ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'"
+                @click="toggle"
+              >
+                <Icon
+                  v-if="isDark"
+                  name="i-heroicons-moon-20-solid"
+                  aria-hidden="true"
+                  class="app-header__theme-icon"
+                />
+                <Icon
+                  v-else
+                  name="i-heroicons-sun-20-solid"
+                  aria-hidden="true"
+                  class="app-header__theme-icon"
+                />
+                <!-- Текст на случай, если иконка не загрузилась + для скринридеров -->
+                <span class="sr-only">{{ isDark ? 'Тёмная тема' : 'Светлая тема' }}</span>
+              </button>
 
-            <select
-              class="app-header__select"
-              :value="mode"
-              @change="setMode(($event.target as HTMLSelectElement).value as any)"
-            >
-              <option value="system">Системная</option>
-              <option value="light">Светлая</option>
-              <option value="dark">Тёмная</option>
-            </select>
-          </div>
+              <select
+                class="app-header__select"
+                :value="mode"
+                @change="setMode(($event.target as HTMLSelectElement).value as any)"
+              >
+                <option value="system">Системная</option>
+                <option value="light">Светлая</option>
+                <option value="dark">Тёмная</option>
+              </select>
+            </div>
+          </ClientOnly>
         </div>
       </header>
 
@@ -65,31 +67,33 @@
                 Кинотеатры
               </NuxtLink>
 
-              <NuxtLink
-                v-if="isAuthed"
-                to="/tickets"
-                class="app-nav__link"
-                :class="{ 'app-nav__link--active': isTicketsRoute }"
-              >
-                Мои билеты
-              </NuxtLink>
+              <ClientOnly>
+                <NuxtLink
+                  v-if="isAuthed"
+                  to="/tickets"
+                  class="app-nav__link"
+                  :class="{ 'app-nav__link--active': isTicketsRoute }"
+                >
+                  Мои билеты
+                </NuxtLink>
 
-              <button
-                v-if="isAuthed"
-                type="button"
-                class="app-nav__link app-nav__link--button"
-                @click="logout"
-              >
-                Выход
-              </button>
-              <NuxtLink
-                v-else
-                to="/auth/login"
-                class="app-nav__link"
-                :class="{ 'app-nav__link--active': isAuthRoute }"
-              >
-                Вход
-              </NuxtLink>
+                <button
+                  v-if="isAuthed"
+                  type="button"
+                  class="app-nav__link app-nav__link--button"
+                  @click="logout"
+                >
+                  Выход
+                </button>
+                <NuxtLink
+                  v-else
+                  to="/auth/login"
+                  class="app-nav__link"
+                  :class="{ 'app-nav__link--active': isAuthRoute }"
+                >
+                  Вход
+                </NuxtLink>
+              </ClientOnly>
             </nav>
 
             <Transition name="app-nav-hint">

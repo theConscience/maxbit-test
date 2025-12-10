@@ -64,6 +64,7 @@ export default defineNuxtConfig({
   },
   app: {
     baseURL: process.env.NUXT_APP_BASE_URL || '/',   // ← вот это
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       htmlAttrs: {
         lang: 'ru',

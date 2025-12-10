@@ -66,7 +66,8 @@ const emit = defineEmits<{
   (e: 'focus', ev: FocusEvent): void
 }>()
 
-const id = computed(() => props.id || `ui-input-${Math.random().toString(36).slice(2)}`)
+const uid = useId()
+const id = computed(() => props.id || `ui-input-${uid}`)
 const descrId = computed(() => `${id.value}-desc`)
 
 function onInput(e: Event) {

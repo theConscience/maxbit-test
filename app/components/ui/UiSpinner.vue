@@ -48,7 +48,7 @@ const { size, inline } = toRefs(props)
   border-width: 3px;
 }
 
-/* если когда-нибудь захочешь инлайн-режим — класс уже есть */
+/* если когда-нибудь захочется инлайн-режим — класс уже есть */
 .spinner--inline {
   @apply align-middle;
 }
